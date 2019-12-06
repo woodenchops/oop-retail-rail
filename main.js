@@ -262,14 +262,9 @@ function RetailRail(props) {
 
 
 
-  function FetchRetailRail(props) {
+  function FetchACFRetailRail(props) {
 
     var xhr = new XMLHttpRequest();
-    
-// acf json example
-// title: rail.acf.profiler.profiler_title,
-// bodyText: rail.acf.room_builder.intro,
-//https://www.conradalgarve.com/wp-json/acf/v3/pages
     xhr.onreadystatechange = function() {
         if(xhr.readyState === 4) {
             if(xhr.status === 200) {
@@ -278,18 +273,18 @@ function RetailRail(props) {
                 if( typeof content == 'object') {
                   var contentObject = Object.entries(content);
                   console.log(contentObject);
-                  contentObject.forEach(function(x) {
+                  contentObject.forEach(function(railObject) {
                  
                     new RetailRail({
-                      parentContainer: x[1][props.parent] || props.parent,
-                      title: x[1][props.title] || props.title,
-                      bodyText: x[1][props.bodyText] || props.bodyText,
-                      ctaText: x[1][props.ctaText] || props.ctaText,
-                      ctaHref: x[1][props.ctaHref] || props.ctaHref,
-                      aria_label_open: x[1][props.aria_label_open] || props.aria_label_open,
-                      aria_label_closed: x[1][props.aria_label_closed] || props.aria_label_closed,
-                      positionFixed: x[1][props.positionFixed] || props.positionFixed,
-                      extraClasses: x[1][props.extraClasses] || props.extraClasses
+                      parentContainer: railObject[1][props.parent] || props.parent,
+                      title: railObject[1][props.title] || props.title,
+                      bodyText: railObject[1][props.bodyText] || props.bodyText,
+                      ctaText: railObject[1][props.ctaText] || props.ctaText,
+                      ctaHref: railObject[1][props.ctaHref] || props.ctaHref,
+                      aria_label_open: railObject[1][props.aria_label_open] || props.aria_label_open,
+                      aria_label_closed: railObject[1][props.aria_label_closed] || props.aria_label_closed,
+                      positionFixed: railObject[1][props.positionFixed] || props.positionFixed,
+                      extraClasses: railObject[1][props.extraClasses] || props.extraClasses
                   });
 
 
@@ -311,7 +306,7 @@ function RetailRail(props) {
                 });
     
                 });
-                console.log(props.positionFixed);
+          
               }
                 
             } else {
@@ -324,7 +319,7 @@ function RetailRail(props) {
     
     }
     
-    var rail = FetchRetailRail({
+    var rail = FetchACFRetailRail({
       endPoint: 'https://www.conradalgarve.com/wp-json/acf/v3/pages/5',
       parent: 'body',
       title: 'more_button_text',
