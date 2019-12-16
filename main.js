@@ -1,104 +1,3 @@
-// class RetailRail {
-
-//     constructor(props) {
-//         this._parentContainer = document.querySelector(props.parentContainer);
-//         this._rail = document.createElement('div');
-//         this._rail.classList.add('retail-rail');
-//         this._rail.innerHTML = `<div class="content-wrap">
-//                                 <div class="text-container retail-rail__child">
-//                                     <h3 class="retail-rail__title"></h3>
-//                                     <p class="retail-rail__body-text"></p>
-//                                 </div>
-//                                     <a href="#" role="button" tabindex="0" aria-label="find out more link" class="retail-rail__child retail-rail__cta"></a>
-//                                     <img src="close_white.svg" alt="" class="retail-rail__close icon-close" tabindex="0" aria-label="close">
-//                                 </div>`;
-
-//         this._close = this._rail.querySelector('.retail-rail__close');
-//         this.title = props.title || "boaby";
-//         this.bodyText = props.bodyText || "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, earum dolores! Molestiae earum dolores! Molestiae";
-//         this.ctaText = props.ctaText || "LEARN MORE";
-//         this.ctaHref = props.ctaHref || "#";
-//         this.extraClasses = props.extraClasses || null;
-
-//         if(this.extraClasses) {
-//             this.extraClasses.forEach(classname => {
-//                 this._rail.classList.add(classname);
-//             });
-//         }
-
-//         this._close.addEventListener('click', () => {
-//             this.closeRail();
-//         });
-
-
-
-//         this.appendRail();
-//     }
-
-
-//     appendRail() {
-//         this._parentContainer.appendChild(this._rail);
-//     }
-
-//     removeRail() {
-//         this._parentContainer.removeChild(this._rail);
-//     }
-
-//     set title(val){
-//         this._rail.querySelector('.retail-rail__title').innerHTML = val;
-//     }
-
-//     get title(){
-//         return this._rail.querySelector('.retail-rail__title').innerHTML;
-//     }
-
-//     set bodyText(val) {
-//         this._rail.querySelector('.retail-rail__body-text').innerHTML = val;
-//     }
-
-//     get bodyText() {
-//         return this._rail.querySelector('.retail-rail__body-text').innerHTML;
-//     }
-    
-//     set ctaText(val) {
-//         this._rail.querySelector('.retail-rail__cta').innerHTML = val;
-//     }
-
-//     get ctaText() {
-//         return this._rail.querySelector('.retail-rail__cta').innerHTML;
-//     } 
-
-//     set ctaHref(val) {
-//         this._rail.querySelector('.retail-rail__cta').href = val;
-//     }
-
-//     get ctaHref() {
-//        return this._rail.querySelector('.retail-rail__cta').href;
-//     }
-
-//     closeRail() {
-//         this._rail.classList.add('hide-rail');
-//     }
-
-//     displayRail() {
-//         this._rail.classList.remove('hide-rail');
-//     }
-
-// }
-
-// var rail = new RetailRail({
-//     parentContainer: '.wrapper',
-//     title: 'New rail',
-//     bodyText: 'We have a great offer - blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah',
-//     ctaText: 'BOOK NOW',
-//     ctaHref: 'https://www.google.com/',
-//     extraClasses: ['test', 'dark-orange']
-// });
-
-// console.log(rail);
-
-// es5 syntax
-
 function RetailRail(props) {
       var self = this;
       // grab props object
@@ -165,6 +64,17 @@ function RetailRail(props) {
     // setter: set the cta href value for the retail rail 
       this.ctaHref = function(val) {
             this._rail.querySelector('.retail-rail__cta').href = val;
+        }
+
+    // setter: set css classes to rail 
+        this.setExtraClasses = function(val) {
+          val.forEach(function(newClasses) {
+              this._rail.classList.add(newClasses);
+          }.bind(this));
+        }
+    // getter: get the list of css classes from rail  
+        this.getClasses = function() {
+          return this._rail.classList;
         }
 
     // method: set state of rail
@@ -256,89 +166,92 @@ function RetailRail(props) {
       
       this.appendRail();
 
-      console.log(this._openState);
-      console.log(this._aria_label);
     }
 
 
-
-  function FetchACFRetailRail(props) {
-
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState === 4) {
-            if(xhr.status === 200) {
-                var content = JSON.parse(xhr.responseText);
-
-                if( typeof content == 'object') {
-                  var contentObject = Object.entries(content);
-                  console.log(contentObject);
-                  contentObject.forEach(function(railObject) {
-                 
-                    new RetailRail({
-                      parentContainer: railObject[1][props.parent] || props.parent,
-                      title: railObject[1][props.title] || props.title,
-                      bodyText: railObject[1][props.bodyText] || props.bodyText,
-                      ctaText: railObject[1][props.ctaText] || props.ctaText,
-                      ctaHref: railObject[1][props.ctaHref] || props.ctaHref,
-                      aria_label_open: railObject[1][props.aria_label_open] || props.aria_label_open,
-                      aria_label_closed: railObject[1][props.aria_label_closed] || props.aria_label_closed,
-                      positionFixed: railObject[1][props.positionFixed] || props.positionFixed,
-                      extraClasses: railObject[1][props.extraClasses] || props.extraClasses
-                  });
+  //   // HELPER FUNCTION - parse response data into JSON
+  
+  function FetchRail(url) {
+    return fetch(url)
+    .then(function(res){ return res.json() })
+    .catch(function(err) {return console.log('Something went wrong...', err)})
+  }
 
 
-                  });
-                } else {
+  // create new rail from data.json
 
-                content.forEach(function(rail) {
+ var dataJsonRail = FetchRail('data.json')
+  .then(function(res) {
+    return new RetailRail({
+      parentContainer: res[0].parentContainer,
+      title: res[0].testTitle[0].sh_title,
+      bodyText: res[0].bodyText,
+      ctaText: res[0].ctaText,
+      ctaHref: res[0].ctaHref,
+    })
+  })
+
+  // create new rail from algarve acf 
+
+  var algarveRail = FetchRail('https://www.conradalgarve.com/wp-json/acf/v3/pages/5')
+  .then(function(res) {
+    return new RetailRail({
+      parentContainer: res.parentContainer,
+      title: res.acf.new_split_panels[0].sh_title + ' - from algarve',
+      bodyText: res.acf.new_split_panels[0].sh_usp[0].description + ' - blah, blah, blah, blah, blah',
+      extraClasses: ['light-green']
+    })
+  })
+
+
+  // create a new instance of the retail rail with hard coded values
     
-                  new RetailRail({
-                    parentContainer: rail[props.parent] || props.parent,
-                    title: rail[props.title] || props.title,
-                    bodyText: rail[props.bodyText] || props.bodyText,
-                    ctaText: rail[props.ctaText] || props.ctaText,
-                    ctaHref: rail[props.ctaHref] || props.ctaHref,
-                    aria_label_open: rail[props.aria_label_open] || props.aria_label_open,
-                    aria_label_closed: rail[props.aria_label_closed] || props.aria_label_closed,
-                    positionFixed: rail[props.positionFixed] || props.positionFixed,
-                    extraClasses: rail[props.extraClasses] || props.extraClasses
-                });
-    
-                });
-          
-              }
-                
-            } else {
-                alert(xhr.statusText);
-            }
-        }
-    }
-    xhr.open('GET', props.endPoint);
-    xhr.send();
-    
-    }
-    
-    var rail = FetchACFRetailRail({
-      endPoint: 'https://www.conradalgarve.com/wp-json/acf/v3/pages/5',
-      parent: 'body',
-      title: 'more_button_text',
-      bodyText: 'meta_description',
-      positionFixed: true,
-      extraClasses: ['test-class']
-    });
-    
-    // create a new instance of the retail rail 
-    
-    var railThree = new RetailRail({
-        parentContainer: '.wrapper-one',
-        title: 'New rail 1',
-        bodyText: 'We have a great offer - this rail came from the RetailRail init function in the main JS file - blah, blah, blah',
-        ctaText: 'BOOK NOW',
-        ctaHref: 'https://www.google.com/',
-        extraClasses: ['MyTestClas', 'light-green'],
-        aria_label_open: 'Retail Rail is open',
-        aria_label_closed: 'Retail Rail is closed',
-        positionFixed: false // position rail fixed to the bottom of the window
-    });
-    
+var railTwo = new RetailRail({
+    parentContainer: '.wrapper-one',
+    title: 'New rail 2 - hard coded',
+    bodyText: 'We have a great offer - this rail came from the RetailRail init function in the main JS file - blah, blah, blah',
+    ctaText: 'BOOK NOW',
+    ctaHref: 'https://www.google.com/',
+    extraClasses: ['MyTestClass', 'dark-orange'],
+    aria_label_open: 'Retail Rail is open',
+    aria_label_closed: 'Retail Rail is closed',
+    positionFixed: true // position rail fixed to the bottom of the window
+});
+
+
+// AJAX
+
+    // function FetchACFRetailRail(props) {
+
+    //   var xhr = new XMLHttpRequest();
+    //   xhr.onreadystatechange = function() {
+  
+    //       if(xhr.readyState === 4) {
+    //           if(xhr.status === 200) {
+    //               var content = JSON.parse(xhr.responseText);
+                  
+    //                 new RetailRail({
+    //                       parentContainer: content[0].parentContainer,
+    //                       title: content[0].title,
+    //                       bodyText: content[0].bodyText,
+    //                       ctaText: content[0].ctaText,
+    //                       ctaHref: content[0].ctaHref,
+    //                       extraClasses: content[0].extraClasses
+    //                   })
+                  
+    //           } else {
+    //               alert(xhr.statusText);
+    //           }
+    //       }
+    //   }
+    //   xhr.open('GET', props.endPoint);
+    //   xhr.send();
+    //   }
+
+
+    //   var railTwo = FetchACFRetailRail({
+    //     endPoint: 'data.json'
+    //   });
+  
+
+        

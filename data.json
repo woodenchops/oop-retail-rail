@@ -1,14 +1,32 @@
 [
     {
        "parentContainer": ".wrapper-two",
-        "title": "New rail 2",
+        "title": "New rail - data.json",
         "bodyText": "We have a great offer - this rail came from the data.json file blah, blah, blah, blah, blah, blah",
         "ctaText": "RESERVE NOW",
         "ctaHref": "https://www.google.com/",
         "aria_label_open": "Retail Rail is open",
         "aria_label_closed": "Retail Rail is closed",
         "positionFixed": true,
-        "extraClasses": ["dark-orange"]
-      }
+        "extraClasses": ["dark-orange"],
+        "testTitle": [
+          {"sh_title": "This is a test rail - from data.json"}
+        ]
+      },
+
+      {
+        "parentContainer": ".wrapper-two",
+         "title": "New rail hghgh - data.json",
+         "bodyText": "We have a great offer - this rail came from the data.json file blah, blah, blah, blah, blah, blah",
+         "ctaText": "RESERVE NOW",
+         "ctaHref": "https://www.google.com/",
+         "aria_label_open": "Retail Rail is open",
+         "aria_label_closed": "Retail Rail is closed",
+         "positionFixed": true,
+         "extraClasses": ["dark-orange"],
+         "testTitle": [
+           {"sh_title": "This is a test rail - from data.json"}
+         ]
+       }
 
 ]
