@@ -1,0 +1,30 @@
+{
+  "name": "xd-retail-rail",
+  "version": "1.0.0",
+  "description": "This JS Class provides an easy and flexible way to integrate a Retail Rail into any web page.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --output-public-path=/dist/ --open"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.7.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@d3git.com:public-code/XD-retail-rail.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

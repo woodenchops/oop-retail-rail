@@ -50,6 +50,28 @@ body {
   background: #1fbb5f;
 }
 
+.retail-rail.dark-gray {
+  background: #151617;
+}
+
+.retail-rail.pink {
+  background: #da238f;
+}
+
+.retail-rail.light-orange {
+  background: #fbaf37;
+}
+
+
+
+.retail-rail.unpublish {
+  display: none !important;
+}
+
+
+
+
+
 .retail-rail .content-wrap {
   display: flex;
   align-items: center;

@@ -76,7 +76,7 @@ You can also use the ```Fetch API``` to pull data from the ACF JSON - the below 
 
 ```js
 
-//   // HELPER FUNCTION - parse response data into JSON
+// HELPER FUNCTION - parse response data into JSON
   
   function FetchRail(url) {
     return fetch(url)
@@ -96,5 +96,63 @@ You can also use the ```Fetch API``` to pull data from the ACF JSON - the below 
       positionFixed: true
     })
   })
+
+```
+
+**async/await method:**
+
+```js
+
+// ASYNC / AWAIT 
+
+async function AsyncFetchRail(url) {
+    //  await until fetch has completed to assign the 'response' variable
+      const response = await fetch(url)
+    // await until response has been parsed into json before assigning tge 'data' variable
+      const data = await response.json();
+    // return response data
+      return data;
+    }
+    
+    
+  var asyncRail = AsyncFetchRail('data.json');
+    asyncRail.then(function(res) {
+    return new RetailRail({
+        parentContainer: res[0].parentContainer,
+        title: 'This rail was pulled from data.json, using async/await',
+        bodyText: res[0].bodyText,
+        ctaText: res[0].ctaText,
+        ctaHref: res[0].ctaHref,
+        extraClasses: ['pink']
+      })
+    });
+
+```
+
+You can also use the ```Publisher``` class to automatically publish and un-publish the rail. You simply provide the rail instance and use the ```getID()``` method, which will return the id attr that you provide on the rail instance ```id: 'hard-coded-rail'``` - you then set the publish and unpublish dates ```YYYYMMDD```
+
+
+```js
+
+var railTwo = new RetailRail({
+    parentContainer: '.wrapper-one',
+    id: 'hard-coded-rail',
+    title: 'Hard coded title',
+    bodyText: 'We have a great offer',
+    ctaText: '',
+    ctaHref: 'https://www.google.com/',
+    extraClasses: ['MyTestClass', 'dark-orange'],
+    aria_label_open: 'Retail Rail is open',
+    aria_label_closed: 'Retail Rail is closed',
+    positionFixed: true // position rail fixed to the bottom of the window
+  });
+
+
+
+var railTimer = new Publisher({
+    rail: railTwo.getID(),
+    publish_offer: '20191223',
+    unpublish_offer:'20191227'
+});
 
 ```

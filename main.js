@@ -1,3 +1,5 @@
+// import 'whatwg-fetch';
+
 function RetailRail(props) {
       var self = this;
       // grab props object
@@ -169,7 +171,7 @@ function RetailRail(props) {
     }
 
 
-  //   // HELPER FUNCTION - parse response data into JSON
+  // HELPER FUNCTION - parse response data into JSON
   
   function FetchRail(url) {
     return fetch(url)
@@ -219,39 +221,43 @@ var railTwo = new RetailRail({
 });
 
 
-// AJAX
+  // create a new instance of the retail rail with custom data attr values
 
-    // function FetchACFRetailRail(props) {
+  var body = document.querySelector('body');
+  var title = body.getAttribute('data-title'),
+      text = body.getAttribute('data-text')
+    
+  var railThree = new RetailRail({
+    title: title,
+    bodyText: text,
+    extraClasses: ['dark-gray'],
+    positionFixed: false // position rail fixed to the bottom of the window
+});
 
-    //   var xhr = new XMLHttpRequest();
-    //   xhr.onreadystatechange = function() {
-  
-    //       if(xhr.readyState === 4) {
-    //           if(xhr.status === 200) {
-    //               var content = JSON.parse(xhr.responseText);
-                  
-    //                 new RetailRail({
-    //                       parentContainer: content[0].parentContainer,
-    //                       title: content[0].title,
-    //                       bodyText: content[0].bodyText,
-    //                       ctaText: content[0].ctaText,
-    //                       ctaHref: content[0].ctaHref,
-    //                       extraClasses: content[0].extraClasses
-    //                   })
-                  
-    //           } else {
-    //               alert(xhr.statusText);
-    //           }
-    //       }
-    //   }
-    //   xhr.open('GET', props.endPoint);
-    //   xhr.send();
-    //   }
+// ASYNC / AWAIT 
 
 
-    //   var railTwo = FetchACFRetailRail({
-    //     endPoint: 'data.json'
-    //   });
-  
+async function AsynchGetRail(url) {
+  //  await until fetch has completed to assign the 'response' variable
+    const response = await fetch(url)
+  // await until response has been parsed before assigning tge 'data' variable
+    const data = await response.json();
+  // return response data
+    return data;
+}
+
+
+var asyncRail = AsynchGetRail('data.json');
+asyncRail.then(function(res) {
+  return new RetailRail({
+    parentContainer: res[0].parentContainer,
+    title: 'This rail has pull from data.json, using async/await',
+    bodyText: res[0].bodyText,
+    ctaText: res[0].ctaText,
+    ctaHref: res[0].ctaHref,
+    extraClasses: ['pink']
+  })
+});
+
 
         
